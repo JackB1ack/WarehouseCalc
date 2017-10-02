@@ -1,0 +1,90 @@
+body {
+    color: #000;
+    background-color: whitesmoke;
+    font-family:'Roboto Condensed', sans-serif;
+}
+table, .btn {
+    font-family: 'Roboto';
+    text-align: center;
+}
+table td[class*="col-"], table th[class*="col-"] {
+    padding: 0;
+}
+h1, h2, h3, h4, h5, h6 {
+    color: #000;
+}
+h2 {
+    text-align: center;
+    margin: 30px 0;
+    list-style-type: none;
+    font-family:'Roboto Slab', serif;
+}
+h3 {
+    margin-top: 0;
+}
+h4 {
+    font-size: 20px;
+    margin: 14px 0;
+}
+th, td {
+    text-align: center;
+    border: 1px solid #000;
+    background-color: #fff;
+    padding: 0;
+}
+td.td6 {
+    background-color: whitesmoke;
+    border: 1px solid whitesmoke;
+}
+input {
+    border: none;
+    text-align: center;
+}
+select {
+    padding: 4px 0px;
+    width: 100%;
+    border: none;
+}
+.btn {
+    color: #fff;
+    margin-top: 20px;
+    padding: 4px 12px;
+    border-bottom: 3px solid rgb(9, 92, 125);
+    background-color: rgb(0, 142, 199);
+}
+.btn:hover, .btn:focus, .btn:active {
+    color: #fff;
+    background-color: #f98f3c;
+    border-bottom: 3px solid #af530c;
+    transition: background-color, color, 0.3s;
+}
+.deleteItem {
+    color: #fff;
+    background-color: rgb(1, 146, 205);
+    text-decoration: none;
+    padding: 2px 10px;
+    border-left: 6px solid rgb(0, 102, 142);
+}
+.deleteItem:hover, .deleteItem:focus, .deleteItem:active {
+    color: #000;
+    transition: 0.4s all;
+    background-color: white;
+    text-decoration: none;
+}
+h3.alert {
+    color: red;
+    padding: 0;
+    margin: 20px 0;
+    border: none;
+    font-weight: 600;
+}
+.video {
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+}
+.warning {
+    color: #fead37;
+    margin: 10px 0;
+    margin-bottom: 20px !important;
+}

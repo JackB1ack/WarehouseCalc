@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="MrJackB1ack">
+    <title>Расчёт площади сухого склада</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> 
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12">
+			<h2>Расчёт площади кладовой сухих товаров</h2>
+			<table>
+			    <thead>
+			    	<tr>
+			        	<th class="col-xs-2">Наименование сырья</th>
+			        	<th class="col-xs-2">Суточное количество, кг</th>
+			        	<th class="col-xs-2">Срок хранения, сутки</th>
+			        	<th class="col-xs-2">Нагрузка на м<sup>2</sup>, кг/м<sup>2</sup></th>
+			        	<th class="col-xs-2">Площадь занимаемая продуктом, м<sup>2</sup></th>
+			    	</tr>
+			    </thead>
+			    <tbody data-bind="foreach: items">
+			    <tr>
+			        <td class="col-xs-2"><select data-bind="options: $root.availableitems, value: item, optionsText: 'itemName'"></select></td>
+			        <td class="col-xs-2"><input data-bind="value: amount"/></td>
+			        <td class="col-xs-2" data-bind="text: item().lifetime"></td>
+			        <td class="col-xs-2" data-bind="text: item().load"></td>
+			        <td class="col-xs-2" data-bind="text: formattedArea"></td>
+			        <td class="col-xs-2 td6"><a class="deleteItem" href="#" data-bind="click: $root.deleteItem">Удалить</a></td>
+			    </tr>
+			    </tbody>
+			</table>
+			<button class="btn" data-bind="click: addItem"><i class="fa fa-plus" aria-hidden="true"></i> Добавить позицию</button>
+			<h4 data-bind="visible: totalArea() > 0">
+			    Итого: <span data-bind="text: totalArea().toFixed(3)"></span> м<sup>2</sup>
+			</h4>
+			<h3 data-bind="visible: totalArea() > 0">
+			    Общая площадь кладовой сухих продуктов: <span data-bind="text: (totalArea()/0.4).toFixed(3)"></span> м<sup>2</sup>
+			</h3>
+		</div>
+		<div class="col-xs-12">
+			<h2>Подбор вспомогательного оборудования</h2>
+		    <table>
+			    <thead>
+				    <tr>
+				        <th class="col-xs-2">Наименование оборудования</th>
+				        <th class="col-xs-1">Тип оборудования</th>
+				        <th class="col-xs-1">Длина</th>
+				        <th class="col-xs-1">Ширина</th>
+				        <th class="col-xs-1">Высота</th>
+				        <th class="col-xs-2">Площадь единицы оборудования, м<sup>2</sup></th>
+				        <th class="col-xs-1">Кол-во оборудования</th>
+				        <th class="col-xs-2">Площадь занимаемая оборудованием, м<sup>2</sup></th>
+				    </tr>
+			    </thead>
+			    <tbody data-bind="foreach: equips">
+				    <tr>
+				        <td class="col-xs-2">
+				        	<select data-bind="options: $root.availableequipment, value: equip, optionsText: 'equipmentName'"></select>
+				        </td>
+				        <td class="col-xs-1" data-bind="text: equip().type "></td>
+				        <td class="col-xs-1" data-bind="text: equip().length"></td>
+				        <td class="col-xs-1" data-bind="text: equip().width"></td>
+				        <td class="col-xs-1" data-bind="text: equip().height"></td>
+				        <td class="col-xs-2" data-bind="text: areaPerUnit().toFixed()"></td>
+				        <td class="col-xs-1"><input data-bind="value: amount1"/></td>
+				        <td class="col-xs-2" data-bind="text: area()"></td>
+				        <td class="col-xs-1 td6">
+				        	<a class="deleteItem" href="#" data-bind="click: $root.deleteEquip">Удалить</a>
+				        </td>
+				    </tr>
+			    </tbody>
+			</table>
+			<button class="btn" data-bind="visible: totalEquipArea() <= totalArea()/0.4, click: addEquip"><i class="fa fa-plus" aria-hidden="true"></i> Добавить позицию</button>
+			<h4 data-bind="visible: totalEquipArea() > 0">
+			    Итого: <span data-bind="text: totalEquipArea().toFixed(3)"></span> м<sup>2</sup>
+			</h4>
+		</div>
+		<div class="col-xs-12">
+			<h3 class="alert" data-bind="visible: totalEquipArea() > totalArea()/0.4">
+			    <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Площадь выбранного оборудования больше площади склада на <span data-bind="text: (totalEquipArea() - (totalArea()/0.4)).toFixed(3)"></span> м<sup>2</sup>!
+			    <p class="warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Уменьшите количество оборудования или добавьте товары</p>
+			    <div class="video">
+			    	<iframe src="http://coub.com/embed/15i3w?muted=true&autostart=true&originalSize=false&startWithHD=false" allowfullscreen="true" frameborder="0" width="640" height="360"></iframe>
+			    </div>
+			</h3>
+		</div>
+	</div>
+</div>
+
+<script async src="//c-cdn.coub.com/embed-runner.js"></script>
+<script src="Script.js"></script>
+<noscript>Sorry, your browser does not support JavaScript!</noscript>
+
+</body>
+</html>
+
