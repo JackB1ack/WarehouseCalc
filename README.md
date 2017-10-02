@@ -1,2 +1,2 @@
 # WarehouseCalc
-Simple warehouse area calculator created using Knockout JS
+Simple warehouse area calculator created using Knockout JS (MVVM)
